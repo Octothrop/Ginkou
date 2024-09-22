@@ -48,4 +48,33 @@ router.get('/getAll/:userId', async function getAllAccountOfUser(req, res) {
     }
 });
 
+//genrating card number and cvv
+const generateCardNumber = () => {
+  return 'xxxx-xxxx-xxxx-xxxx'.replace(/[x]/g, () => {
+    return (Math.floor(Math.random() * 10)).toString();
+  });
+};
+const generateCVV = () => {
+  return Math.floor(100 + Math.random() * 900).toString(); // Generates a random number between 100 and 999
+};
+
+router.get('/createCard/:userId',async function createCard (req, res) {
+  const { accountId, expiration } = req.body;
+
+  try {
+    const newCard = await prisma.card.create({
+      data: {
+        accountId: accountId,
+        cardNumber: generateCardNumber(),
+        expiration: expiration || new Date(new Date().setFullYear(new Date().getFullYear() + 3)), // default to 3 years from now
+        cvv: generateCVV()
+      },
+    });
+
+    res.status(201).json({ message: 'Card created successfully', card: newCard });
+  } catch (error) {
+    res.status(500).json({ error: 'Error creating card' });
+  }
+});
+
 export default router;

@@ -1,0 +1,33 @@
+* {
+  font-family: "Courier New", Courier, monospace;
+  margin: 0px;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3px;
+}
+
+.links .link {
+  text-decoration: none;
+  margin-right: 15px;
+  color: black;
+  align-items: right;
+  font-size: 15px;
+}
+
+.links .link:hover {
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+.marquee-block {
+  background-color: rgb(41, 39, 116);
+  color: white;
+  margin: 0px;
+  height: 50px;
+  align-content: center;
+}
