@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: "Courier New", Courier, monospace;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: rgba(222, 205, 254, 0.563);
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .first-container {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border: 10px;
+            border-color: rgb(163, 44, 96);
+        }
+
+        .text {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .text h2 {
+            font-size: 75px;
+            font-weight: normal;
+        }
+
+        .text p {
+            font-size: 1.06em;
+            text-align: justify;
+        }
+
+        .image-container img {
+            height: 500px;
+        }
+
+        .ad {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .main {
+            margin-bottom: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="first-container">
+            <div class="text">
+                <h2>EASY BANKING</h2>
+                <p>
+                    Experience hassle free transactions and enjoy our exclusive offers
+                </p>
+            </div>
+            <div class="image-container">
+                <img src="https://img.freepik.com/free-vector/flat-woman-paying-by-pos-terminal-refund-cashback_88138-785.jpg?t=st=1726832923~exp=1726836523~hmac=33af9f974fd407c7901aaacb09572e157cc9e3e71aa6234c9c2ee3c6bb232d65&w=900"
+                    alt="Banking Image" />
+            </div>
+        </div>
+        <img class="ad"
+            src="https://img.freepik.com/free-vector/banking-business-facebook-cover-template_23-2150971679.jpg?t=st=1726834075~exp=1726837675~hmac=0b34f17ba8af2adee096029152d6dc4a0d4a5f905b86027af8d68d987e80f022&w=900"></img>
+    </div>
+</body>
+
+</html>

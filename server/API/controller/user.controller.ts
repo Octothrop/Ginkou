@@ -14,7 +14,7 @@ router.post('/newUser', async function createUser(req, res) {
                 DOB,
                 email,
                 address,
-                password, 
+                password,
                 Role
             },
         });
@@ -48,21 +48,45 @@ router.get('/findAllUsers', async function getAllUsers(req, res) {
 });
 
 router.get('/getUser/:userId', async function getUserById(req, res) {
-    try{
-        const userIdFind :number = parseInt(req.params.userId, 10);
+    try {
+        const userIdFind: number = parseInt(req.params.userId, 10);
         const user = await prisma.user.findFirst({
             where: {
                 userId: userIdFind
             }
         });
-        if (user){  
+        if (user) {
             res.status(200).json(user);
         } else {
-            res.status(404).json({error: 'user not found'});
+            res.status(404).json({ error: 'user not found' });
         }
-    } catch(err) {
+    } catch (err) {
         res.status(500).json("Internal server error");
     }
 });
+
+router.post('/user-login', async function loginUser(req, res) {
+    try {
+        const { firstName, lastName, password } = req.body;
+        const user = await prisma.user.findFirst({
+            where:{
+                firstName, 
+                lastName,
+                password
+            }
+        });
+
+        if (user){
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({message: 'user not found, invalid credentials'});
+        }
+
+    } catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Internal server error'});
+    }
+    
+})
 
 export default router;

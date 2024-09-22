@@ -3,6 +3,8 @@
 - https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/
 - https://dev.to/prisma/set-up-a-free-postgresql-database-on-supabase-to-use-with-prisma-3pk6
 - https://www.prisma.io/docs/orm/prisma-schema/data-model/models
+- https://www.svgrepo.com/svg/507846/rupee-circle?edit=true
+-https://react.dev/learn
 
 # Primsa Model
 - Represents entities 
@@ -30,9 +32,13 @@
 - Glitch in migrating schema to db :
     = https://github.com/supabase/supabase/issues/26953
     = https://supabase.com/partners/integrations/prisma
-
+- Error: error: Environment variable not found: DATABASE_URL.
+    = https://stackoverflow.com/questions/67796217/prisma-getting-environment-variable-not-found-error-message-when-running-graph
 
 # commands
 - `npx prisma migrate dev --name init`
 - `npm install module_name > npm install --save-dev @types/module_name`
 - `npx ts-node app.main.ts`
+- `npx create-react-app my-app`
+- `npm start`
+- `npx prisma generate`

@@ -32,9 +32,11 @@ model Account {
   user            User          @relation(fields: [userId], references: [userId])
   userId          Int
   Type            AccType       @default(SAVINGS)
-  balance         Float         @default(100.0) // Minimum balance on creation by default
+  balance         Float         @default(100.0)
   fromTransaction Transaction[] @relation("Debit")
   toTransaction   Transaction[] @relation("Credit")
+  accountStatus   AccStatus     @default(APPLIED)
+  Card            Card[]
 }
 
 model Transaction {
@@ -45,10 +47,24 @@ model Transaction {
   toAccount     Account  @relation("Credit", fields: [toAccountId], references: [accountId])
   toAccountId   Int
   mode          MOP      @default(CASH)
+  cardId        Int?
+  card          Card?    @relation(fields: [cardId], references: [cardId])
   time          DateTime @default(now())
   status        Status   @default(PENDING)
   remark        String   @db.VarChar(300)
 }
+
+model Card {
+  cardId       Int           @id @default(autoincrement())
+  cardNumber   String        @unique
+  expiration   DateTime
+  cvv          String        @db.VarChar(3)
+  accountId    Int
+  account      Account       @relation(fields: [accountId], references: [accountId])
+  createdAt    DateTime      @default(now())
+  transactions Transaction[] @relation
+}
+
 
 enum AccType {
   SAVINGS
@@ -71,4 +87,10 @@ enum MOP {
 enum Role {
   USER
   ADMIN
+}
+
+enum AccStatus {
+  APPLIED
+  APPROVED
+  DECLINED
 }

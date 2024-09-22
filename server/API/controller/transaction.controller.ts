@@ -26,10 +26,10 @@ router.post('/pay/:userId', async function makePayment(req, res) {
                 where: { accountId: toAccountId }
             });
 
-            if (!fromAccount){
+            if (!fromAccount) {
                 fromAccountId = 3;
-            } 
-            if (!toAccount){
+            }
+            if (!toAccount) {
                 toAccountId = 3;
             }
 
@@ -37,8 +37,8 @@ router.post('/pay/:userId', async function makePayment(req, res) {
             const transaction = await prisma.transaction.create({
                 data: {
                     amount: amount,
-                    fromAccountId: fromAccountId ,
-                    toAccountId: toAccountId ,
+                    fromAccountId: fromAccountId,
+                    toAccountId: toAccountId,
                     mode: mode,
                     remark: ''
                 }
@@ -55,7 +55,7 @@ router.post('/pay/:userId', async function makePayment(req, res) {
                 });
                 res.status(400).json({ error: 'Account not found - This transaction cannot be performed' });
             } else if (userRole?.Role != "ADMIN" && fromAccount.balance - amount < 100) {
-                
+
                 await prisma.transaction.update({
                     where: { transactionId: transaction.transactionId },
                     data: {
@@ -66,13 +66,13 @@ router.post('/pay/:userId', async function makePayment(req, res) {
                 res.status(400).json({ error: 'Insufficient balance - This transaction cannot be performed' });
             } else {
 
-                if (userRole?.Role!="ADMIN") {
-                // Update sender account
-                await prisma.account.update({
-                    where: { accountId: fromAccountId },
-                    data: { balance: fromAccount.balance - amount }
-                });
-            }
+                if (userRole?.Role != "ADMIN") {
+                    // Update sender account
+                    await prisma.account.update({
+                        where: { accountId: fromAccountId },
+                        data: { balance: fromAccount.balance - amount }
+                    });
+                }
 
                 // Update receiver account
                 await prisma.account.update({
@@ -110,6 +110,82 @@ router.post('/pay/:userId', async function makePayment(req, res) {
         res.status(500).json(transaction);
     }
 });
+
+router.post("/pay-card", async function performTransactionWithCard(req, res) {
+    const { toAccountId, cardNumber, cvv, amount, remark } = req.body;
+
+    try {
+        const card = await prisma.card.findUnique({
+            where: {
+                cardNumber: cardNumber,
+            }
+        });
+
+        if (!card || card.cvv !== cvv || new Date(card.expiration).getTime() <= Date.now()) {
+            return res.status(400).json({ error: 'Invalid card or card expired' });
+        }
+
+        const fromAccount = await prisma.account.findUnique({
+            where: {
+                accountId: card.accountId,
+            },
+        });
+
+        const toAccount = await prisma.account.findUnique({
+            where: {
+                accountId: toAccountId,
+            },
+        });
+
+        if (!fromAccount) {
+            return res.status(400).json({ error: 'From account not found' });
+        }
+
+        if (!toAccount) {
+            return res.status(400).json({ error: 'To account not found' });
+        }
+
+        if (fromAccount.balance < amount) {
+            return res.status(400).json({ error: 'Insufficient balance' });
+        }
+
+        const transaction = await prisma.transaction.create({
+            data: {
+                amount: amount,
+                fromAccountId: fromAccount.accountId,
+                toAccountId: toAccountId,
+                mode: 'CARD',
+                cardId: card.cardId,
+                remark: remark || '',
+                status: "PENDING"
+            }
+        });
+
+        await prisma.account.update({
+            where: { accountId: fromAccount.accountId },
+            data: { balance: fromAccount.balance - amount }
+        });
+
+        await prisma.account.update({
+            where: { accountId: toAccountId },
+            data: { balance: toAccount.balance + amount }
+        });
+
+        await prisma.transaction.update({
+            where: { transactionId: transaction.transactionId },
+            data: {
+                status: "SUCCESS",
+                remark: "Payment successful"
+            }
+        });
+
+        res.status(200).json({ message: 'Transaction successful', transaction: transaction });
+    } catch (error) {
+        res.status(500).json({ error: 'Error processing transaction' });
+    }
+
+});
+
 
 router.get('/allTransaction/:userId', async function getAllUserTransactions(req, res) {
     try {
