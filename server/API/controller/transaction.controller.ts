@@ -189,21 +189,92 @@ router.post("/pay-card", async function performTransactionWithCard(req, res) {
 
 router.get('/allTransaction/:userId', async function getAllUserTransactions(req, res) {
     try {
-        const userId: number = parseInt(req.params.userId, 10);
-        const transactions = await prisma.transaction.findMany({
+        const userId = parseInt(req.params.userId, 10);
+        const accounts = await prisma.account.findMany({
             where: {
-                OR: [
-                    { fromAccountId: userId },
-                    { toAccountId: userId }
-                ]
+                userId: userId
+            },
+            select: {
+                accountId: true
+            }
+        });
+        console.log(accounts);
+
+        const accountIds = accounts.map(account => account.accountId);
+
+        const debitTransactions = await prisma.transaction.findMany({
+            where: {
+                toAccountId: {
+                    in: accountIds
+                },
+                fromAccountId: {
+                    notIn: accountIds
+                },
+                status: 'SUCCESS'
             }
         });
 
-        res.status(200).json(transactions);
+        const creditTransactions = await prisma.transaction.findMany({
+            where: {
+                fromAccountId: {
+                    in: accountIds
+                },
+                toAccountId: {
+                    notIn: accountIds
+                },
+                status: 'SUCCESS'
+            }
+        });
+
+        const selfTransactions = await prisma.transaction.findMany({
+            where: {
+                fromAccountId: {
+                    in: accountIds
+                },
+                toAccountId: {
+                    in : accountIds
+                },
+                status: 'SUCCESS'
+            }
+        });
+
+        const failedTransactions = await prisma.transaction.findMany({
+            where: {
+                AND: [
+                    {
+                        status: 'FAILED'
+                    },
+                    {
+                        OR: [
+                            {
+                                fromAccountId: {
+                                    in: accountIds
+                                }
+                            },
+                            {
+                                toAccountId: {
+                                    in: accountIds
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+        
+        res.status(200).json({
+            creditTransactions,
+            debitTransactions,
+            selfTransactions,
+            failedTransactions
+        });
     } catch (err) {
         console.error("Error retrieving all transactions: " + err);
         res.status(500).json({ error: "Could not fetch transactions" });
     }
 });
+
+
+
 
 export default router;

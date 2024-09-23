@@ -3,6 +3,7 @@ import Header from "../header-footer/header";
 import Footer from "../header-footer/footer";
 import TestimonialsSlider from "./slider";
 import "./home.css";
+import CardDisplay from "../user-panel/cards";
 
 export default function Home() {
   return (

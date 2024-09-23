@@ -1,10 +1,10 @@
 # References
-- https://supabase.com/
-- https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/
-- https://dev.to/prisma/set-up-a-free-postgresql-database-on-supabase-to-use-with-prisma-3pk6
-- https://www.prisma.io/docs/orm/prisma-schema/data-model/models
-- https://www.svgrepo.com/svg/507846/rupee-circle?edit=true
--https://react.dev/learn
+- `https://supabase.com/`
+- `https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/`
+- `https://dev.to/prisma/set-up-a-free-postgresql-database-on-supabase-to-use-with-prisma-3pk6`
+- `https://www.prisma.io/docs/orm/prisma-schema/data-model/models`
+- `https://www.svgrepo.com/svg/507846/rupee-circle?edit=true`
+- `https://react.dev/learn`
 
 # Primsa Model
 - Represents entities 
@@ -30,10 +30,13 @@
 
 # Resolves :
 - Glitch in migrating schema to db :
-    = https://github.com/supabase/supabase/issues/26953
-    = https://supabase.com/partners/integrations/prisma
+    = `https://github.com/supabase/supabase/issues/26953`
+    = `https://supabase.com/partners/integrations/prisma`
 - Error: error: Environment variable not found: DATABASE_URL.
-    = https://stackoverflow.com/questions/67796217/prisma-getting-environment-variable-not-found-error-message-when-running-graph
+    = `https://stackoverflow.com/questions/67796217/prisma-getting-environment-variable-not-found-error-message-when-running-graph`
+- Git issues :
+    = `https://timmousk.com/blog/git-push-hangs/`
+    = `https://github.com/orgs/community/discussions/15222`
 
 # commands
 - `npx prisma migrate dev --name init`
