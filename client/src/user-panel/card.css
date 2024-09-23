@@ -1,0 +1,103 @@
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  background: linear-gradient(135deg, #1D2671, #C33764); /* Gradient adjusted */
+  color: white;
+  width: 340px;
+  height: 210px;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.25);
+  position: relative;
+  font-family: 'Courier New', Courier, monospace;
+  background-size: cover; /* Makes sure the gradient covers the full card */
+}
+
+.bank-name {
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  letter-spacing: 1px;
+}
+
+.card-logo {
+  width: 50px;
+  height: 50px;
+  background-color: gold;
+  border-radius: 5px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: #333;
+}
+
+.card-number {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-top: 60px;
+  font-weight: bold;
+}
+
+.card-number-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.expiration {
+  font-size: 12px;
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+}
+
+.valid-thru-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 78px;
+  left: 20px;
+}
+
+.cvv {
+  position: absolute;
+  bottom: 50px;
+  right: 20px;
+  font-size: 14px;
+}
+
+.cardholder {
+  font-size: 18px;
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+/* Custom gradients for variety */
+.card:nth-child(1) {
+  background: linear-gradient(135deg, #1A2980, #26D0CE);
+}
+
+.card:nth-child(2) {
+  background: linear-gradient(135deg, #FF512F, #DD2476);
+}
+
+.card:nth-child(3) {
+  background: linear-gradient(135deg, #F09819, #EDDE5D);
+}
+
+.card:nth-child(4) {
+  background: linear-gradient(135deg, #4776E6, #8E54E9);
+}

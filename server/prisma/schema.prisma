@@ -59,12 +59,12 @@ model Card {
   cardNumber   String        @unique
   expiration   DateTime
   cvv          String        @db.VarChar(3)
+  type         CardType      @default(DEBIT)
   accountId    Int
   account      Account       @relation(fields: [accountId], references: [accountId])
   createdAt    DateTime      @default(now())
   transactions Transaction[] @relation
 }
-
 
 enum AccType {
   SAVINGS
@@ -93,4 +93,9 @@ enum AccStatus {
   APPLIED
   APPROVED
   DECLINED
+}
+
+enum CardType {
+  DEBIT
+  CREDIT
 }

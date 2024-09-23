@@ -59,14 +59,15 @@ const generateCVV = () => {
 };
 
 router.get('/createCard/:userId',async function createCard (req, res) {
-  const { accountId, expiration } = req.body;
+  const { accountId, type } = req.body;
 
   try {
     const newCard = await prisma.card.create({
       data: {
         accountId: accountId,
         cardNumber: generateCardNumber(),
-        expiration: expiration || new Date(new Date().setFullYear(new Date().getFullYear() + 3)), // default to 3 years from now
+        expiration: new Date(new Date().setFullYear(new Date().getFullYear() + 3)), // default to 3 years from now
+        type: type,
         cvv: generateCVV()
       },
     });
@@ -74,6 +75,26 @@ router.get('/createCard/:userId',async function createCard (req, res) {
     res.status(201).json({ message: 'Card created successfully', card: newCard });
   } catch (error) {
     res.status(500).json({ error: 'Error creating card' });
+  }
+});
+
+
+router.get('/allCards/:userId', async function getCards(req, res) {
+  const userId = parseInt(req.params.userId);
+
+  try {
+    const Allcards = await prisma.account.findMany({
+      where: { userId },
+      select: {
+        Card: true
+      }
+    });
+    const cards =  Allcards.flatMap(item => item.Card);
+
+    res.status(200).json(cards);
+  } catch (err) {
+    console.error("Account retrieval error:", err);
+    res.status(500).json({ error: 'Could not retrieve the accounts' });
   }
 });
 
