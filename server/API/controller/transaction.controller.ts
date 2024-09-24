@@ -232,7 +232,7 @@ router.get('/allTransaction/:userId', async function getAllUserTransactions(req,
                     in: accountIds
                 },
                 toAccountId: {
-                    in : accountIds
+                    in: accountIds
                 },
                 status: 'SUCCESS'
             }
@@ -261,7 +261,7 @@ router.get('/allTransaction/:userId', async function getAllUserTransactions(req,
                 ]
             }
         });
-        
+
         res.status(200).json({
             creditTransactions,
             debitTransactions,
@@ -274,7 +274,16 @@ router.get('/allTransaction/:userId', async function getAllUserTransactions(req,
     }
 });
 
-
+router.get('/admin/all', async function getAllTransactions(req, res) {
+    try {
+        const sucessTransactions = await prisma.transaction.findMany({where: {status: 'SUCCESS'}});
+        const failedTransactions = await prisma.transaction.findMany({where: {status: 'FAILED'}});
+        res.status(200).json({sucessTransactions, failedTransactions});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "could not fetch all transactions" });
+    }
+})
 
 
 export default router;

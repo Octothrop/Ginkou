@@ -22,11 +22,12 @@ router.post('/newAccount/:userId', async function createAccount(req, res) {
     }
 });
 
-router.delete('/closeAccount/:accountId', async function closeAccount(req, res) {
+router.put('/closeAccount/:accountId', async function closeAccount(req, res) {
     try {
         const accountId: number = parseInt(req.params.accountId, 10);
-        await prisma.account.delete({
-            where: { accountId }
+        await prisma.account.update({
+            where: { accountId: accountId },
+            data: {accountStatus: 'CLOSED'}
         });
         res.status(200).json({ message: 'Account deleted sucessfully' });
     } catch (err) {
@@ -46,6 +47,16 @@ router.get('/getAll/:userId', async function getAllAccountOfUser(req, res) {
         console.error("Account retrival error : " + err);
         res.status(500).json({ error: 'Could not retrive the accounts' });
     }
+});
+
+router.get('/getAllAccounts', async function getAllAccounts(req, res) {
+  try {
+      const accounts = await prisma.account.findMany({});
+      res.status(200).json(accounts);
+  } catch (err) {
+      console.error("Account error : " + err);
+      res.status(500).json({ error: 'Could not retrive the accounts' });
+  }
 });
 
 //genrating card number and cvv
