@@ -1,5 +1,4 @@
-1. all acounts display
-2. make payment + qr
-3. admin all transactions
-4. admin all acounts
-5. admin close account + update to store all acount details acrd details etc on another past record
+1. make payment admin - user
+2. fetch all user account
+3. create account admin
+4. consolidate all the dashboard

@@ -93,6 +93,7 @@ enum AccStatus {
   APPLIED
   APPROVED
   DECLINED
+  CLOSED
 }
 
 enum CardType {
