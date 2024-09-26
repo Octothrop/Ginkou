@@ -148,7 +148,7 @@ export default function RegisterComponent() {
           required
         />
         <br />
-        {error && <p className="error-message">Error: {error}</p>}
+        {error && <p style={{color: 'red', textAlign:"center"}} className="error-message">Internal server Error</p>}
         {sucess && <p className="success-message">{sucess}</p>}
         <button type="submit" disabled={loading} className="submit-button">
           {loading ? "Loading" : "Register"}

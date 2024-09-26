@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./accounts.css";
+import Footer from "../header-footer/footer";
+import AdminHeader from "../header-footer/admin-header";
 
 function Accounts() {
   const [accounts, setAccounts] = useState([]);
@@ -63,69 +65,110 @@ function Accounts() {
     }
   };
 
+  // Handle card issuance
+  const handleIssueCard = async (userId, accountId) => {
+    const confirmIssue = window.confirm(
+      "Are you sure you want to issue a card for this account?"
+    );
+    if (!confirmIssue) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:7000/api/createCard/${userId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            accountId,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        alert("Card issued successfully");
+      } else {
+        alert("Failed to issue card");
+      }
+    } catch (error) {
+      console.error("Error issuing card:", error);
+    }
+  };
+
   return (
-    <div className="accounts-container">
-      <div className="accounts-list">
-        {accounts.map((account) => (
-          <div className="account-card" key={account.accountId}>
-            <div className="account-info">
-              <p>
-                <strong>Account No:</strong> XXXX XXXX {account.accountId}
-              </p>
-              <div className="action-buttons">
-                <button
-                  onClick={() =>
-                    handleDetailsClick(account.userId, account.accountId)
-                  }
-                >
-                  i
-                </button>
-                {account.accountStatus !== "CLOSED" && (
+    <div>
+      <AdminHeader />
+      <div className="accounts-container">
+        <div className="accounts-list">
+          {accounts.map((account) => (
+            <div className="account-card" key={account.accountId}>
+              <div className="account-info">
+                <p>
+                  <strong>Account No:</strong> XXXX XXXX {account.accountId}
+                </p>
+                <div className="action-buttons">
                   <button
-                    className="close-btn"
-                    onClick={() => handleCloseAccount(account.accountId)}
+                    onClick={() =>
+                      handleDetailsClick(account.userId, account.accountId)
+                    }
                   >
-                    Close Account
+                    i
                   </button>
-                )}
-                {account.accountStatus === "CLOSED" && (
-                  <button
-                    className="closed-btn"
-                  >
-                    CLOSED
-                  </button>
-                )}
-              </div>
-            </div>
-            <p>
-              <strong>Balance:</strong> ₹ {account.balance}.00
-            </p>
-            {selectedAccountId === account.accountId && userDetails && (
-              <div className="user-details">
-                <div className="user-details-header">
-                  <p>
-                    <strong>Name:</strong> {userDetails.firstName}{" "}
-                    {userDetails.lastName}
-                  </p>
-                  <button
-                    onClick={() => setSelectedAccountId(null)}
-                    style={{ fontWeight: "bold", alignSelf: "flex-end" }}
-                  >
-                    X
-                  </button>
+                  {account.accountStatus !== "CLOSED" && (
+                    <button
+                      className="close-btn"
+                      onClick={() => handleCloseAccount(account.accountId)}
+                    >
+                      Close Account
+                    </button>
+                  )}
+                  {account.accountStatus !== "CLOSED" && (
+                    <button
+                      className="close-btn"
+                      onClick={() =>
+                        handleIssueCard(account.userId, account.accountId)
+                      }
+                    >
+                      Issue Card
+                    </button>
+                  )}
+                  {account.accountStatus === "CLOSED" && (
+                    <button className="closed-btn">CLOSED</button>
+                  )}
                 </div>
-                <p>
-                  <strong>Email:</strong> {userDetails.email}
-                </p>
-                <p>
-                  <strong>Date of Birth:</strong>{" "}
-                  {new Date(userDetails.DOB).toLocaleDateString()}
-                </p>
               </div>
-            )}
-          </div>
-        ))}
+              <p>
+                <strong>Balance:</strong> ₹ {account.balance}.00
+              </p>
+              {selectedAccountId === account.accountId && userDetails && (
+                <div className="user-details">
+                  <div className="user-details-header">
+                    <p>
+                      <strong>Name:</strong> {userDetails.firstName}{" "}
+                      {userDetails.lastName}
+                    </p>
+                    <button
+                      onClick={() => setSelectedAccountId(null)}
+                      style={{ fontWeight: "bold", alignSelf: "flex-end" }}
+                    >
+                      X
+                    </button>
+                  </div>
+                  <p>
+                    <strong>Email:</strong> {userDetails.email}
+                  </p>
+                  <p>
+                    <strong>Date of Birth:</strong>{" "}
+                    {new Date(userDetails.DOB).toLocaleDateString()}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
+      <Footer />
     </div>
   );
 }

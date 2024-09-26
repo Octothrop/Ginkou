@@ -1,8 +1,10 @@
 .card-container {
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  min-height: 58vh;
 }
 
 .card {
@@ -14,12 +16,11 @@
   overflow: hidden;
   background: rgba(255, 255, 255, 0.2);
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.25);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease-out;
   cursor: pointer;
 }
-
 
 .card::before {
   content: "";
@@ -28,7 +29,12 @@
   left: -75%;
   width: 250%;
   height: 100%;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.1)
+  );
   transition: all 0.4s ease;
   transform: skewX(-15deg);
   z-index: 1;
@@ -99,21 +105,41 @@
 }
 
 .card:nth-child(1) {
-  background: linear-gradient(135deg, rgba(255, 20, 147, 0.2), rgba(75, 0, 130, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 20, 147, 0.2),
+    rgba(75, 0, 130, 0.4)
+  );
 }
 
 .card:nth-child(2) {
-  background: linear-gradient(135deg, rgba(255, 165, 0, 0.2), rgba(255, 69, 0, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 165, 0, 0.2),
+    rgba(255, 69, 0, 0.4)
+  );
 }
 
 .card:nth-child(3) {
-  background: linear-gradient(135deg, rgba(0, 191, 255, 0.2), rgba(25, 25, 112, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 191, 255, 0.2),
+    rgba(25, 25, 112, 0.4)
+  );
 }
 
 .card:nth-child(4) {
-  background: linear-gradient(135deg, rgba(50, 205, 50, 0.2), rgba(0, 100, 0, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(50, 205, 50, 0.2),
+    rgba(0, 100, 0, 0.4)
+  );
 }
 
 .card:nth-child(5) {
-  background: linear-gradient(135deg, rgba(255, 255, 0, 0.2), rgba(255, 215, 0, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 0, 0.2),
+    rgba(255, 215, 0, 0.4)
+  );
 }

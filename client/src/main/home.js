@@ -3,13 +3,22 @@ import Header from "../header-footer/header";
 import Footer from "../header-footer/footer";
 import TestimonialsSlider from "./slider";
 import "./home.css";
-import CardDisplay from "../user-panel/cards";
+import UserHeader from "../header-footer/user_header";
+import AdminHeader from "../header-footer/admin-header";
+import { useParams } from "react-router-dom";
 
 export default function Home() {
+  const obj = useParams();
+  if (!obj.user){
+    obj.user="no-user";
+  }
+  console.log(obj.user);
   return (
     <>
       <div class="header">
-        <Header />
+      {obj.user === 'no-user' && <Header />}
+        {obj.user === 'USER' && <UserHeader />}
+        {obj.user === 'ADMIN' && <AdminHeader />}
       </div>
       <div class="main">
         <div class="section-1">

@@ -27,10 +27,10 @@ router.post('/pay/:userId', async function makePayment(req, res) {
             });
 
             if (!fromAccount) {
-                fromAccountId = 3;
+                fromAccountId = 13;
             }
             if (!toAccount) {
-                toAccountId = 3;
+                toAccountId = 13;
             }
 
             // Create transaction

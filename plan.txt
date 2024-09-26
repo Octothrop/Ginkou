@@ -1,4 +1,1 @@
 1. make payment admin - user
-2. fetch all user account
-3. create account admin
-4. consolidate all the dashboard
