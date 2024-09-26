@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Transactions_all.css";
+import Footer from "../header-footer/footer";
+import AdminHeader from "../header-footer/admin-header";
 
 function TransactionDisplayAll() {
   const [transactions, setTransactions] = useState([]);
@@ -38,7 +40,7 @@ function TransactionDisplayAll() {
       return { color: "red" };
     } else if (transaction.type === "sucess") {
       return { color: "blue" };
-    } 
+    }
     return {};
   };
 
@@ -49,15 +51,25 @@ function TransactionDisplayAll() {
   };
 
   return (
+    <div>
+      <AdminHeader />
     <div className="transaction-container">
       {transactions.length === 0 ? (
         <div style={{ textAlign: "center", padding: "20px" }}>
           <img
-            src="https://img.freepik.com/free-vector/hand-drawn-no-data-illustration_23-2150696467.jpg?t=st=1727115903~exp=1727119503~hmac=84814b7f18a43e09d89421208d9572e2835b0c7a0338e4a22970fb770e6cfadf&w=740"
-            alt="No Transactions"
-            style={{ width: '100%', height: '100%' }}
+            src="https://i.pinimg.com/originals/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.png"
+             alt="No Transactions"
+            style={{ width: "100%", height: "100%" }}
           />
-          <p style={{fontSize: '20px', color: 'rgb(245, 142, 187)', fontWeight: 'bold'}}>-- No data available --</p>
+          <p
+            style={{
+              fontSize: "20px",
+              color: "rgb(245, 142, 187)",
+              fontWeight: "bold",
+            }}
+          >
+            -- No data available --
+          </p>
         </div>
       ) : (
         <table>
@@ -87,8 +99,8 @@ function TransactionDisplayAll() {
                       style: "currency",
                       currency: "INR",
                     })}
-                    </td>
-                    <td>
+                  </td>
+                  <td>
                     <span
                       role="img"
                       aria-label="details"
@@ -106,14 +118,10 @@ function TransactionDisplayAll() {
                   <tr className="transaction-details">
                     <td colSpan="5">
                       <div>
-                        {transaction.type !== "failed" && (
-                          <>
-                            <strong>From Account:</strong>{" "}
-                            {transaction.fromAccountId} <br />
-                            <strong>To Account:</strong> {transaction.toAccountId}{" "}
-                            <br />
-                          </>
-                        )}
+                        <strong>From Account:</strong>{" "}
+                        {transaction.fromAccountId} <br />
+                        <strong>To Account:</strong> {transaction.toAccountId}{" "}
+                        <br />
                         <strong>Transcript :</strong> {transaction.remark}
                       </div>
                     </td>
@@ -124,6 +132,8 @@ function TransactionDisplayAll() {
           </tbody>
         </table>
       )}
+    </div>
+    <Footer />
     </div>
   );
 }

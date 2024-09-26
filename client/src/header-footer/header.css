@@ -3,12 +3,17 @@
   margin: 0px;
 }
 
+.main {
+  background-color: white;
+  margin-bottom: 0px;
+}
+
 .main-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 3px;
+  overflow-y: hidden;
 }
 
 .links .link {

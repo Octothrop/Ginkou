@@ -5,57 +5,99 @@ const router = Router();
 const prisma = new PrismaClient();
 
 router.post('/newAccount/:userId', async function createAccount(req, res) {
-    try {
-        const userIdCA = parseInt(req.params.userId, 10);
-        const { Type, balance } = req.body;
-        const account = await prisma.account.create({
-            data: {
-                userId: userIdCA,
-                Type: Type,
-                balance: balance
-            }
-        });
-        res.status(201).json(account);
-    } catch (err) {
-        console.error("Account creation error : " + err);
-        res.status(500).json({ error: "Could not create an account" });
-    }
+  try {
+    const userIdCA = parseInt(req.params.userId, 10);
+    const { Type, balance } = req.body;
+    const account = await prisma.account.create({
+      data: {
+        userId: userIdCA,
+        Type: Type,
+        balance: balance
+      }
+    });
+    res.status(201).json(account);
+  } catch (err) {
+    console.error("Account creation error : " + err);
+    res.status(500).json({ error: "Could not create an account" });
+  }
+});
+
+router.put('/forgotPassword', async function changePassword(req, res) {
+  try{
+    const {email, newPassword} = req.body;
+    await prisma.user.update({
+      where: {
+        email: email
+      },
+      data: {
+        password: newPassword
+      }
+    });
+    res.status(200).json('Password updated');
+  } catch(error){
+    console.error(error);
+    res.status(500).json('Internal serevr error');
+  }
 });
 
 router.put('/closeAccount/:accountId', async function closeAccount(req, res) {
-    try {
-        const accountId: number = parseInt(req.params.accountId, 10);
-        await prisma.account.update({
-            where: { accountId: accountId },
-            data: {accountStatus: 'CLOSED'}
+  try {
+    const accountId: number = parseInt(req.params.accountId, 10);
+    const account = await prisma.account.findUnique({
+      where: {
+        accountId: accountId
+      }
+    });
+    if (account !== null) {
+      await prisma.$transaction(async (prisma) => {
+        await prisma.transaction.create({
+          data: {
+            amount: account.balance,
+            fromAccountId: 13,
+            toAccountId: accountId,
+            mode: 'NEFT',
+            remark: 'Admin : Account closure'
+          }
         });
-        res.status(200).json({ message: 'Account deleted sucessfully' });
-    } catch (err) {
-        console.error("Account deleteion error : " + err);
-        res.status(500).json({ error: 'Account could not be deleted.' })
+        await prisma.account.update({
+          where: { accountId: accountId },
+          data: {
+            accountStatus: 'CLOSED',
+            balance: 0
+          }
+        });
+      });
+    } else {
+      throw new Error('Account not found');
     }
+    res.status(200).json({ message: 'Account deleted sucessfully' });
+  } catch (err) {
+    console.error("Account deleteion error : " + err);
+    res.status(500).json({ error: 'Account could not be deleted.' })
+
+  }
 });
 
 router.get('/getAll/:userId', async function getAllAccountOfUser(req, res) {
-    try {
-        const userId = parseInt(req.params.userId, 10);
-        const accounts = await prisma.account.findMany({
-            where: { userId }
-        });
-        res.status(200).json(accounts);
-    } catch (err) {
-        console.error("Account retrival error : " + err);
-        res.status(500).json({ error: 'Could not retrive the accounts' });
-    }
+  try {
+    const userId = parseInt(req.params.userId, 10);
+    const accounts = await prisma.account.findMany({
+      where: { userId }
+    });
+    res.status(200).json(accounts);
+  } catch (err) {
+    console.error("Account retrival error : " + err);
+    res.status(500).json({ error: 'Could not retrive the accounts' });
+  }
 });
 
 router.get('/getAllAccounts', async function getAllAccounts(req, res) {
   try {
-      const accounts = await prisma.account.findMany({});
-      res.status(200).json(accounts);
+    const accounts = await prisma.account.findMany({});
+    res.status(200).json(accounts);
   } catch (err) {
-      console.error("Account error : " + err);
-      res.status(500).json({ error: 'Could not retrive the accounts' });
+    console.error("Account error : " + err);
+    res.status(500).json({ error: 'Could not retrive the accounts' });
   }
 });
 
@@ -69,7 +111,7 @@ const generateCVV = () => {
   return Math.floor(100 + Math.random() * 900).toString(); // Generates a random number between 100 and 999
 };
 
-router.get('/createCard/:userId',async function createCard (req, res) {
+router.post('/createCard/:userId', async function createCard(req, res) {
   const { accountId, type } = req.body;
 
   try {
@@ -100,7 +142,7 @@ router.get('/allCards/:userId', async function getCards(req, res) {
         Card: true
       }
     });
-    const cards =  Allcards.flatMap(item => item.Card);
+    const cards = Allcards.flatMap(item => item.Card);
 
     res.status(200).json(cards);
   } catch (err) {

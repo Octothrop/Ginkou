@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./card.css";
+import Footer from "../header-footer/footer";
+import UserHeader from "../header-footer/user_header";
 
 function CardDisplay() {
-  const { id } = useParams();
+  const { userId } = useParams();
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    if (id) {
-      fetch(`http://localhost:7000/api/allCards/${id}`)
+    if (userId) {
+      fetch(`http://localhost:7000/api/allCards/${userId}`)
         .then((response) => response.json())
         .then((data) => setCards(data))
         .catch((error) => console.error("Error fetching cards:", error));
     }
-  }, [id]);
+  }, [userId]);
   const handleMouseMove = (e, cardIndex) => {
     const card = document.querySelectorAll(".card")[cardIndex];
     const rect = card.getBoundingClientRect();
@@ -25,6 +27,8 @@ function CardDisplay() {
   };
 
   return (
+    <div className="card-main">
+      <UserHeader userId={userId}/>
     <div className="card-container">
       {cards.map((card, index) => (
         <div
@@ -46,6 +50,8 @@ function CardDisplay() {
           </div>
         </div>
       ))}
+    </div>
+    <Footer className="footer"/>
     </div>
   );
 }

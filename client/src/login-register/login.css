@@ -63,3 +63,7 @@ color:rgb(237, 159, 95);
 .link:hover {
   font-weight: bold;
 }
+.error-message,
+.success-message {
+  font-size: 0.8rem;
+}

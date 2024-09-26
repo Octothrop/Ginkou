@@ -18,23 +18,23 @@ body {
   background-color: #fff;
 }
 
-.section-1 {
-margin: 0px 20px;
+.main .section-1 {
+  margin-top: 60px;
   display: flex;
   align-items: center;
 }
 
-.text {
+.section-1 .text {
   flex: 1;
   margin-right: 20px;
 }
 
-.text h2 {
+.section-1 .text h2 {
   font-size: 75px;
   font-weight: normal;
 }
 
-.text p {
+.section-1 .text p {
   font-size: 1.2em;
   text-align: justify;
 }
