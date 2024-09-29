@@ -59,3 +59,9 @@ tr:hover {
   background-color: #f9f9f9;
   padding: 10px;
 }
+
+
+.no-data{
+  margin: 10px;
+  height: 400px;
+}

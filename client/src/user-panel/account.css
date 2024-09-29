@@ -56,6 +56,9 @@
   z-index: 2;
 }
 
+.no-data{
+  height: 400px;
+}
 .account:nth-child(odd) {
   background: linear-gradient(135deg, rgba(255, 99, 71, 0.3), rgba(75, 0, 130, 0.5));
 }

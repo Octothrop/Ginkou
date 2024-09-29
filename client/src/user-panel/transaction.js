@@ -67,25 +67,14 @@ function TransactionDisplay() {
 
   return (
     <div>
-      <UserHeader userId={userId}/>
+      <UserHeader userId={userId} />
       <div className="transaction-container">
         {transactions.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "20px" }}>
-            <img
-              src="https://img.freepik.com/free-vector/hand-drawn-no-data-illustration_23-2150696467.jpg?t=st=1727115903~exp=1727119503~hmac=84814b7f18a43e09d89421208d9572e2835b0c7a0338e4a22970fb770e6cfadf&w=740"
-              alt="No Transactions"
-              style={{ width: "100%", height: "100%" }}
-            />
-            <p
-              style={{
-                fontSize: "20px",
-                color: "rgb(245, 142, 187)",
-                fontWeight: "bold",
-              }}
-            >
-              -- No data available --
-            </p>
-          </div>
+          <img
+            class="no-data"
+            src="https://img.freepik.com/free-vector/hand-drawn-no-data-concept_52683-127823.jpg?t=st=1727436461~exp=1727440061~hmac=72671970110de69627864245de65e03f8ef4817108ea35e8c439b80184a7dd90&w=996"
+            alt="No Transactions"
+          />
         ) : (
           <table>
             <thead>

@@ -9,16 +9,16 @@ import { useParams } from "react-router-dom";
 
 export default function Home() {
   const obj = useParams();
-  if (!obj.user){
-    obj.user="no-user";
+  if (!obj.user) {
+    obj.user = "no-user";
   }
   console.log(obj.user);
   return (
     <>
       <div class="header">
-      {obj.user === 'no-user' && <Header />}
-        {obj.user === 'USER' && <UserHeader />}
-        {obj.user === 'ADMIN' && <AdminHeader />}
+        {obj.user === "no-user" && <Header />}
+        {obj.user === "USER" && <UserHeader />}
+        {obj.user === "ADMIN" && <AdminHeader />}
       </div>
       <div class="main">
         <div class="section-1">

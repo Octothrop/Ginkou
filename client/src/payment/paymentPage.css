@@ -1,0 +1,15 @@
+.payment-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.payment-main {
+  margin-top: 5px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: #f5f5f5;
+}

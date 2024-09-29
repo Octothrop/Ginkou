@@ -6,8 +6,10 @@ import AdminHeader from "../header-footer/admin-header";
 function Users() {
   const [users, setUsers] = useState([]);
   const [selectedAccType, setSelectedAccType] = useState({});
+  const [avl, setAvl] = useState(false);
 
   useEffect(() => {
+    setAvl(false);
     const fetchUsers = async () => {
       try {
         const response = await fetch("http://localhost:7000/api/findAllUsers", {
@@ -16,6 +18,9 @@ function Users() {
         const data = await response.json();
         setUsers(data);
         console.log(data);
+        if (data.length > 0) {
+          setAvl(true);
+        }
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -56,56 +61,62 @@ function Users() {
   return (
     <div className="user-main">
       <AdminHeader />
-    <div className="users-container">
-      <div className="users-list">
-        {users.map((user) => (
-          <div className="user-card" key={user.userId}>
-            <div className="user-info">
-              <p>
-                <strong>Name:</strong> {user.firstName} {user.lastName}
-              </p>
-              <div className="user-details">
+      <div className="users-container">
+        <div className="users-list">
+          {users.map((user) => (
+            <div className="user-card" key={user.userId}>
+              <div className="user-info">
                 <p>
-                  <strong>Email:</strong> {user.email}
+                  <strong>Name:</strong> {user.firstName} {user.lastName}
                 </p>
-                <p>
-                  <strong>Date of Birth:</strong>{" "}
-                  {new Date(user.DOB).toLocaleDateString()}
-                </p>
-                <p>
-                  <strong>Address:</strong> {user.address}
-                </p>
-              </div>
-              <div className="account-type">
-                <label htmlFor={`accType-${user.userId}`}>
-                  Select Account Type:
-                </label>
-                <select
-                  id={`accType-${user.userId}`}
-                  value={selectedAccType[user.userId] || ""}
-                  onChange={(e) =>
-                    setSelectedAccType({
-                      ...selectedAccType,
-                      [user.userId]: e.target.value,
-                    })
-                  }
-                >
-                  <option value="" disabled>
-                    Select
-                  </option>
-                  <option value="SAVINGS">Savings</option>
-                  <option value="CURRENT">Current</option>
-                </select>
-                <button onClick={() => handleCreateAccount(user.userId)}>
-                  Create Account
-                </button>
+                <div className="user-details">
+                  <p>
+                    <strong>Email:</strong> {user.email}
+                  </p>
+                  <p>
+                    <strong>Date of Birth:</strong>{" "}
+                    {new Date(user.DOB).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Address:</strong> {user.address}
+                  </p>
+                </div>
+                <div className="account-type">
+                  <label htmlFor={`accType-${user.userId}`}>
+                    Select Account Type:
+                  </label>
+                  <select
+                    id={`accType-${user.userId}`}
+                    value={selectedAccType[user.userId] || ""}
+                    onChange={(e) =>
+                      setSelectedAccType({
+                        ...selectedAccType,
+                        [user.userId]: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    <option value="SAVINGS">Savings</option>
+                    <option value="CURRENT">Current</option>
+                  </select>
+                  <button onClick={() => handleCreateAccount(user.userId)}>
+                    Create Account
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+          {!avl && (
+            <img
+              class="no-data"
+              src="https://img.freepik.com/free-vector/hand-drawn-no-data-concept_52683-127818.jpg?t=st=1727436545~exp=1727440145~hmac=f1c0c4f43b5109fa4b95635138c2eeb8aa9ef09f0dd36d76bc414ac1b3ce1322&w=996"
+            />
+          )}
+        </div>
       </div>
-    </div>
-    <Footer />
+      <Footer />
     </div>
   );
 }

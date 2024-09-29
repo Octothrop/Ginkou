@@ -99,3 +99,8 @@ button:hover {
   cursor: not-allowed;
   font-size: 15px;
 }
+
+
+.no-data{
+  height: 400px;
+}
