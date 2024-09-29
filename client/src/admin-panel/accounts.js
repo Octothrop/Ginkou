@@ -7,9 +7,11 @@ function Accounts() {
   const [accounts, setAccounts] = useState([]);
   const [selectedAccountId, setSelectedAccountId] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
+  const [avl, setAvl] = useState(false);
 
   // Fetch all accounts on component mount
   useEffect(() => {
+    setAvl(false);
     const fetchAccounts = async () => {
       try {
         const response = await fetch(
@@ -17,6 +19,9 @@ function Accounts() {
         );
         const data = await response.json();
         setAccounts(data);
+        if (data.length > 0) {
+          setAvl(true);
+        }
       } catch (error) {
         console.error("Error fetching accounts:", error);
       }
@@ -101,71 +106,79 @@ function Accounts() {
       <AdminHeader />
       <div className="accounts-container">
         <div className="accounts-list">
-          {accounts.map((account) => (
-            <div className="account-card" key={account.accountId}>
-              <div className="account-info">
-                <p>
-                  <strong>Account No:</strong> XXXX XXXX {account.accountId}
-                </p>
-                <div className="action-buttons">
-                  <button
-                    onClick={() =>
-                      handleDetailsClick(account.userId, account.accountId)
-                    }
-                  >
-                    i
-                  </button>
-                  {account.accountStatus !== "CLOSED" && (
+          {avl &&
+            accounts.map((account) => (
+              <div className="account-card" key={account.accountId}>
+                <div className="account-info">
+                  <p>
+                    <strong>Account No:</strong> XXXX XXXX {account.accountId}
+                  </p>
+                  <div className="action-buttons">
                     <button
-                      className="close-btn"
-                      onClick={() => handleCloseAccount(account.accountId)}
-                    >
-                      Close Account
-                    </button>
-                  )}
-                  {account.accountStatus !== "CLOSED" && (
-                    <button
-                      className="close-btn"
                       onClick={() =>
-                        handleIssueCard(account.userId, account.accountId)
+                        handleDetailsClick(account.userId, account.accountId)
                       }
                     >
-                      Issue Card
+                      i
                     </button>
-                  )}
-                  {account.accountStatus === "CLOSED" && (
-                    <button className="closed-btn">CLOSED</button>
-                  )}
-                </div>
-              </div>
-              <p>
-                <strong>Balance:</strong> ₹ {account.balance}.00
-              </p>
-              {selectedAccountId === account.accountId && userDetails && (
-                <div className="user-details">
-                  <div className="user-details-header">
-                    <p>
-                      <strong>Name:</strong> {userDetails.firstName}{" "}
-                      {userDetails.lastName}
-                    </p>
-                    <button
-                      onClick={() => setSelectedAccountId(null)}
-                      style={{ fontWeight: "bold", alignSelf: "flex-end" }}
-                    >
-                      X
-                    </button>
+                    {account.accountStatus !== "CLOSED" && (
+                      <button
+                        className="close-btn"
+                        onClick={() => handleCloseAccount(account.accountId)}
+                      >
+                        Close Account
+                      </button>
+                    )}
+                    {account.accountStatus !== "CLOSED" && (
+                      <button
+                        className="close-btn"
+                        onClick={() =>
+                          handleIssueCard(account.userId, account.accountId)
+                        }
+                      >
+                        Issue Card
+                      </button>
+                    )}
+                    {account.accountStatus === "CLOSED" && (
+                      <button className="closed-btn">CLOSED</button>
+                    )}
                   </div>
-                  <p>
-                    <strong>Email:</strong> {userDetails.email}
-                  </p>
-                  <p>
-                    <strong>Date of Birth:</strong>{" "}
-                    {new Date(userDetails.DOB).toLocaleDateString()}
-                  </p>
                 </div>
-              )}
-            </div>
-          ))}
+                <p>
+                  <strong>Balance:</strong> ₹ {account.balance}.00
+                </p>
+                {selectedAccountId === account.accountId && userDetails && (
+                  <div className="user-details">
+                    <div className="user-details-header">
+                      <p>
+                        <strong>Name:</strong> {userDetails.firstName}{" "}
+                        {userDetails.lastName}
+                      </p>
+                      <button
+                        onClick={() => setSelectedAccountId(null)}
+                        style={{ fontWeight: "bold", alignSelf: "flex-end" }}
+                      >
+                        X
+                      </button>
+                    </div>
+                    <p>
+                      <strong>Email:</strong> {userDetails.email}
+                    </p>
+                    <p>
+                      <strong>Date of Birth:</strong>{" "}
+                      {new Date(userDetails.DOB).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+
+          {!avl && (
+            <img
+              class="no-data"
+              src="https://img.freepik.com/free-vector/hand-drawn-no-data-concept_52683-127829.jpg?t=st=1727435938~exp=1727439538~hmac=0142a55ef92173d2bbcb63b7951b1996bbea97f63290fdfecbb618cdee8fdf03&w=740"
+            ></img>
+          )}
         </div>
       </div>
       <Footer />

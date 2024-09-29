@@ -1,0 +1,51 @@
+.card-payment-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card-payment-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card-payment-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.card-payment-form input,
+.card-payment-form textarea,
+.card-payment-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.card-payment-form input[disabled].,
+.card-payment-form select[disabled] {
+  background-color: #f5f5f5;
+}
+
+.card-payment-form button {
+  padding: 10px 20px;
+  background-color: #192b8fa1;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+}
+
+.card-payment-form button:hover {
+  background-color: #192462c1;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}

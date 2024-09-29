@@ -65,6 +65,29 @@ router.get('/getUser/:userId', async function getUserById(req, res) {
     }
 });
 
+router.get('/getUser/account/:accountId', async function getUserById(req, res) {
+    try {
+        const accountIdFind = parseInt(req.params.accountId, 10);
+        const account = await prisma.account.findUnique({
+            where: {
+                accountId: accountIdFind
+            },
+            include: {
+                user: true
+            }
+        });
+
+        if (account && account.user) {
+            res.status(200).json(account.user);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 router.post('/user-login', async function loginUser(req, res) {
     try {
         const { firstName, lastName, password } = req.body;

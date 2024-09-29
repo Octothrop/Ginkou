@@ -57,19 +57,10 @@ function TransactionDisplayAll() {
       {transactions.length === 0 ? (
         <div style={{ textAlign: "center", padding: "20px" }}>
           <img
-            src="https://i.pinimg.com/originals/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.png"
+            src="https://img.freepik.com/free-vector/hand-drawn-no-data-concept_52683-127823.jpg?t=st=1727436461~exp=1727440061~hmac=72671970110de69627864245de65e03f8ef4817108ea35e8c439b80184a7dd90&w=996"
              alt="No Transactions"
             style={{ width: "100%", height: "100%" }}
           />
-          <p
-            style={{
-              fontSize: "20px",
-              color: "rgb(245, 142, 187)",
-              fontWeight: "bold",
-            }}
-          >
-            -- No data available --
-          </p>
         </div>
       ) : (
         <table>

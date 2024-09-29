@@ -18,9 +18,11 @@ export default function UserHeader() {
         <div className="links">
           <Link className="link" to={`/${userId}/USER`}> Home </Link> |
           <Link className="link" to={`/${userId}/USER`}> Explore </Link> |
-          <Link className="link" to={`/accounts/${userId}`}> UAccounts </Link> |
+          <Link className="link" to={`/accounts/${userId}`}> Accounts </Link> |
           <Link className="link" to={`/history/${userId}`}> History </Link> |
-          <Link className="link" to={`/cards/${userId}`}> Cards </Link> |
+          <Link className="link" to={`/cards/${userId}`}> Cards </Link> | 
+          <Link className="link" to={`/ginkou/payment/${userId}/USER`}> Transfer </Link> | 
+          <Link className="link" to={`/ginkou/card/payment/${userId}/USER`}> Card Pay </Link> |
           <Link className="link" to="/" onClick={handleLogout}> Logout </Link>
         </div>
       </div>
