@@ -2,11 +2,12 @@ import React from "react";
 import queryString from "query-string";
 import PaymentPage from "./payment";
 import { useLocation } from "react-router-dom";
-import Header from "../header-footer/header";
 import Footer from "../header-footer/footer";
 import "./paymentPage.css";
 import { useParams } from "react-router-dom";
 import UserHeader from "../header-footer/user_header";
+import AdminHeader from "../header-footer/admin-header";
+import Header from "../header-footer/header";
 
 export default function Pay() {
   const obj = useParams();
@@ -15,6 +16,7 @@ export default function Pay() {
   }
   const location = useLocation();
   const queryParams = queryString.parse(location.search);
+  const { userId } = useParams();
 
   const defaultToAccount = parseInt(queryParams.toAccountId, 10) || undefined;
   const defaultFromAccount =
@@ -22,11 +24,18 @@ export default function Pay() {
   const defaultMode = queryParams.mode || undefined;
   const defaultAmount = parseFloat(queryParams.amount) || undefined;
 
+  const hasDefaultParams =
+    defaultToAccount !== undefined &&
+    defaultFromAccount !== undefined &&
+    defaultMode !== undefined &&
+    defaultAmount !== undefined;
+
   return (
     <div className="payment-container">
       <div class="header">
-        {obj.user === "no-user" && <Header />}
-        {obj.user === "USER" && <UserHeader />}
+        {!hasDefaultParams && obj.user === "ADMIN" && <AdminHeader />}
+        {!hasDefaultParams && obj.user === "USER" && <UserHeader />}
+        {hasDefaultParams && <Header />}
       </div>
       <main className="payment-main">
         <PaymentPage
@@ -34,6 +43,7 @@ export default function Pay() {
           defaultFromAccount={defaultFromAccount}
           defaultMode={defaultMode}
           defaultAmount={defaultAmount}
+          userId={userId}
         />
       </main>
       <Footer />

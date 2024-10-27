@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "./header.css";
 import { Link, useNavigate  } from "react-router-dom";
 
@@ -20,6 +19,7 @@ export default function AdminHeader() {
           <Link className="link" to={`/${1}/ADMIN`}> Explore </Link> |
           <Link className="link" to="/manage/users"> Users </Link> |
           <Link className="link" to="/manage/transactions"> Transactions </Link> |
+          <Link className="link" to={`/ginkou/payment/${1}/ADMIN`}> Transfer </Link> | 
           <Link className="link" to="/manage/accounts"> Accounts </Link> |
           <Link className="link" to="/" onClick={handleLogout}> Logout </Link>
           

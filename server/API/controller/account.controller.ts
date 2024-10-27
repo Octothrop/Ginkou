@@ -23,8 +23,8 @@ router.post('/newAccount/:userId', async function createAccount(req, res) {
 });
 
 router.put('/forgotPassword', async function changePassword(req, res) {
-  try{
-    const {email, newPassword} = req.body;
+  try {
+    const { email, newPassword } = req.body;
     await prisma.user.update({
       where: {
         email: email
@@ -34,7 +34,7 @@ router.put('/forgotPassword', async function changePassword(req, res) {
       }
     });
     res.status(200).json('Password updated');
-  } catch(error){
+  } catch (error) {
     console.error(error);
     res.status(500).json('Internal serevr error');
   }
@@ -83,6 +83,23 @@ router.get('/getAll/:userId', async function getAllAccountOfUser(req, res) {
     const userId = parseInt(req.params.userId, 10);
     const accounts = await prisma.account.findMany({
       where: { userId }
+    });
+    res.status(200).json(accounts);
+  } catch (err) {
+    console.error("Account retrival error : " + err);
+    res.status(500).json({ error: 'Could not retrive the accounts' });
+  }
+});
+
+router.get('/getAllAccId/:userId', async function getAllAccountOfUserAcc(req, res) {
+  try {
+    const userId = parseInt(req.params.userId, 10);
+    const accounts = await prisma.account.findMany({
+      where: {
+        userId,
+        accountStatus: 'APPLIED',
+      },
+      select: { accountId: true }
     });
     res.status(200).json(accounts);
   } catch (err) {

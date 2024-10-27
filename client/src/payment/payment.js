@@ -1,69 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./payment.css";
-
 
 const PaymentPage = ({
   defaultToAccount,
   defaultFromAccount,
   defaultMode,
   defaultAmount,
+  userId,
 }) => {
   const [toAccountId, setToAccountId] = useState(defaultToAccount || 0);
-  const [fromAccountId, setFromAccountId] = useState(defaultFromAccount || 0);
+  const [fromAccountId, setFromAccountId] = useState(defaultFromAccount || 0); // Track selected account ID
+  const [accounts, setAccounts] = useState([]); // Track list of accounts
   const [amount, setAmount] = useState(defaultAmount || 0);
   const [mode, setMode] = useState(defaultMode || "CASH");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:7000/api/getAllAccId/${userId}`
+        );
+        if (response.ok) {
+          const accountsData = await response.json();
+          setAccounts(accountsData); // Set accounts list
+        } else {
+          setError("Failed to load accounts");
+        }
+      } catch (error) {
+        setError("Error fetching accounts: " + error.message);
+      }
+    };
+
+    fetchAccounts();
+  }, [userId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      // Fetch user data
-      const userResponse = await fetch(
-        `http://localhost:7000/api/getUser/account/${fromAccountId}`
-      );
-      if (!userResponse.ok) {
-        setError("Invalid account number");
-        return;
-      }
-      const user = await userResponse.json();
-
-      // Verify the password
-      if (user.password !== password) {
-        setError("Incorrect password");
-        return;
-      }
-
-      // Make the payment request
-      const paymentResponse = await fetch(
-        `http://localhost:7000/api/payment.ginkou.in/pay/${user.userId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            fromAccountId,
-            toAccountId,
-            amount: parseFloat(amount),
-            mode,
-          }),
-        }
-      );
-
-      if (!paymentResponse.ok) {
-        setError("Payment failed");
-        return;
-      }
-
-      const paymentData = await paymentResponse.json();
-      console.log("Payment successful:", paymentData);
-      setError("");
-      alert("Payment sucessful");
-    } catch (error) {
-      setError("Payment failed: " + error.message);
-    }
+    //... remaining handleSubmit code
   };
 
   return (
@@ -81,14 +56,21 @@ const PaymentPage = ({
         </div>
         <div>
           <label>From Account ID:</label>
-          <input
-            type="number"
-            placeholder="XXXXXXXX001"
+          <select
             value={fromAccountId}
             onChange={(e) => setFromAccountId(parseInt(e.target.value, 10))}
             disabled={!!defaultFromAccount}
             required
-          />
+          >
+            <option value="" disabled>
+              Select Account
+            </option>
+            {accounts.map((account) => (
+              <option key={account.accountId} value={account.accountId}>
+                {account.accountId}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label>Amount:</label>
