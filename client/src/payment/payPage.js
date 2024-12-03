@@ -23,12 +23,14 @@ export default function Pay() {
     parseInt(queryParams.fromAccountId, 10) || undefined;
   const defaultMode = queryParams.mode || undefined;
   const defaultAmount = parseFloat(queryParams.amount) || undefined;
+  const url = queryParams.url || undefined;
 
   const hasDefaultParams =
     defaultToAccount !== undefined &&
     defaultFromAccount !== undefined &&
     defaultMode !== undefined &&
-    defaultAmount !== undefined;
+    defaultAmount !== undefined&&
+    url !== undefined;
 
   return (
     <div className="payment-container">
@@ -43,7 +45,8 @@ export default function Pay() {
           defaultFromAccount={defaultFromAccount}
           defaultMode={defaultMode}
           defaultAmount={defaultAmount}
-          userId={userId}
+          UrlUserId={userId}
+          url = {url}
         />
       </main>
       <Footer />
